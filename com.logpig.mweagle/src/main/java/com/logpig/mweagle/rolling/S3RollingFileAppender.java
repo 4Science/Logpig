@@ -119,6 +119,14 @@ public class S3RollingFileAppender<E> extends RollingFileAppender<E>
 	{
 		return s3Settings.retryCount;
 	}
+	
+	public void setBucketPrefix(String bucketPrefix) {
+		s3Settings.bucketPrefix = bucketPrefix;
+	}
+	
+	public String getBucketPrefix() {
+		return s3Settings.bucketPrefix;
+	}
 
 	public void setMockPut(boolean mockPost)
 	{

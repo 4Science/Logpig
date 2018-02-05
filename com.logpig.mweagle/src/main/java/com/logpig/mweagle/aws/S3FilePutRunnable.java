@@ -26,6 +26,7 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.EC2MetadataUtils;
 import com.logpig.mweagle.rolling.S3Settings;
 
 /**
@@ -63,6 +64,8 @@ public class S3FilePutRunnable implements Runnable
 		boolean doExit = false;
 		int attempt = 0;
 		final AmazonS3Client s3Client = new AmazonS3Client(this.s3Settings.getAWSCredentials());
+		s3Client.setRegion(this.s3Settings.regionName.toAWSRegion());
+		
 		while (!doExit && attempt != this.s3Settings.retryCount)
 		{
 			try
@@ -74,7 +77,13 @@ public class S3FilePutRunnable implements Runnable
 						s3Client.createBucket(this.s3Settings.bucketName, this.s3Settings.regionName);
 					}
 					final File logfile = new File(this.filePath);
-					final String keyName = UUID.randomUUID().toString();
+					final String keyName;
+					if (this.s3Settings.bucketPrefix != null) {
+						keyName = this.s3Settings.bucketPrefix.replace("[instanceID]", EC2MetadataUtils.getInstanceId()) + logfile.getName(); 
+					}
+					else {
+						keyName = UUID.randomUUID().toString();
+					}
 					final PutObjectRequest request = new PutObjectRequest(this.s3Settings.bucketName, keyName, logfile);
 					s3Client.putObject(request);
 				}

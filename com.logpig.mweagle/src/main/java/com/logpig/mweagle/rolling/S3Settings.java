@@ -34,6 +34,8 @@ public class S3Settings {
 	public String secretKey;
 
 	public String bucketName;
+	
+	public String bucketPrefix;
 
 	public Region regionName = S3Settings.DEFAULT_REGION_NAME;
 
