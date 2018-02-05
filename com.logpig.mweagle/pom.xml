@@ -24,7 +24,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aws-version>1.11.115</aws-version>
+		<aws-version>1.11.155</aws-version>
 	</properties>
 
 	<dependencies>
